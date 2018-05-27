@@ -12,10 +12,10 @@ export default new Router({
   routes: [
     {
       path: '/',
-      redirect: '/recomment'
+      redirect: '/recommend'
     },
     {
-      path: '/recomment',
+      path: '/recommend',
       component: Recommend
     },
     {
