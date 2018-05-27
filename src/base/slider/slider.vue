@@ -3,7 +3,9 @@
     <div class="slider-group" ref="sliderGroup">
       <slot></slot>
     </div>
-    <div class="dots"></div>
+    <div class="dots">
+      <span class="dot" v-for="(item, index) in dots" :class="{active: currentPageIndex === index}" :key="index"></span>
+    </div>
   </div>
 </template>
 
@@ -25,15 +27,37 @@ export default {
       default: 4000
     }
   },
+  data () {
+    return {
+      dots: [],
+      currentPageIndex: 0
+    }
+  },
   mounted () {
     setTimeout(() => {
       this._setSliderWidth()
       this._initSlider()
+      this._initDots()
+
+      if (this.autoPlay) {
+        this._play()
+      }
     }, 20)
+
+    let self = this
+    window.addEventListener('resize', () => {
+      if (!self.slider) {
+        return
+      }
+
+      self._setSliderWidth(true)
+      self.slider.refresh()
+    })
   },
   methods: {
-    _setSliderWidth () {
+    _setSliderWidth (isResize) {
       this.children = this.$refs.sliderGroup.children
+      this.childrenOriLen = this.children.length
       let width = 0
       let sliderWidth = this.$refs.slider.clientWidth
       for (let i = 0; i < this.children.length; i++) {
@@ -43,7 +67,7 @@ export default {
         width += sliderWidth
       }
 
-      if (this.loop) {
+      if (this.loop && !isResize) {
         width += 2 * sliderWidth
       }
 
@@ -60,7 +84,37 @@ export default {
         snapSpeed: 400,
         click: true
       })
+
+      this.slider.on('scrollEnd', () => {
+        let pageIndex = this.slider.getCurrentPage().pageX
+        if (this.loop) {
+          pageIndex -= 1
+        }
+
+        this.currentPageIndex = pageIndex
+
+        if (this.autoPlay) {
+          clearTimeout(this.timer)
+          this._play()
+        }
+      })
+    },
+    _initDots () {
+      this.dots = new Array(this.childrenOriLen)
+    },
+    _play () {
+      let pageIndex = this.currentPageIndex + 1
+      if (this.loop) {
+        pageIndex += 1
+      }
+
+      this.timer = setTimeout(() => {
+        this.slider.goToPage(pageIndex, 0, 400)
+      }, this.interval)
     }
+  },
+  destroyed () {
+    clearTimeout(this.timer)
   }
 }
 </script>
@@ -70,6 +124,7 @@ export default {
 
 .slider {
   min-height: 1px;
+  position: relative;
 
   .slider-group {
     position: relative;
