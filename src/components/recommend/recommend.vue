@@ -76,6 +76,7 @@ export default {
 
 <style scoped lang="stylus" rel="stylesheet/stylus">
   @import "~common/stylus/variable"
+
   .recommend
     position: fixed
     width: 100%
