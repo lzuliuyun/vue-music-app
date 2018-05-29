@@ -19,12 +19,28 @@ module.exports = {
           '^/api/recommend': ''
         }
       },
+      '/api/singerdetail': {
+        target: 'https://c.y.qq.com/v8/fcg-bin/fcg_v8_singer_track_cp.fcg',
+        secure: false,  // 如果是https接口，需要配置这个参数
+        changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+        pathRewrite: {
+          '^/api/singerdetail': ''
+        }
+      },
       '/api/singer': {
         target: 'https://c.y.qq.com/v8/fcg-bin/v8.fcg',
         secure: false,  // 如果是https接口，需要配置这个参数
         changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
         pathRewrite: {
           '^/api/singer': ''
+        }
+      },
+      '/api/lyric': {
+        target: 'https://c.y.qq.com/lyric/fcgi-bin/fcg_query_lyric_new.fcg',
+        secure: false,  // 如果是https接口，需要配置这个参数
+        changeOrigin: true, // 如果接口跨域，需要进行这个参数配置
+        pathRewrite: {
+          '^/api/lyric': ''
         }
       }
     },

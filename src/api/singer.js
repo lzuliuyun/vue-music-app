@@ -19,7 +19,7 @@ export function getSingerList () {
 }
 
 export function getSingerDetail (singerId) {
-  const url = '/api/singer'
+  const url = '/api/singerdetail'
 
   const data = Object.assign({}, commonParams, {
     hostUin: 0,
@@ -32,5 +32,5 @@ export function getSingerDetail (singerId) {
     singermid: singerId
   })
 
-  return axios.get(url, data)
+  return axios.get(url, {params: data})
 }
