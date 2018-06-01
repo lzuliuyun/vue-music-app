@@ -1,5 +1,5 @@
-import {commonParams} from './config'
-import axios from 'axios'
+import {commonParams, options} from './config'
+import jsonp from 'common/js/jsonp'
 
 export function getLyric (mid) {
   const url = '/api/lyric'
@@ -11,12 +11,11 @@ export function getLyric (mid) {
     needNewCode: 0,
     categoryId: 10000000,
     pcachetime: +new Date(),
-    format: 'json'
+    format: 'jsonp'
   })
 
-  return axios.get(url, {
-    params: data
-  }).then((res) => {
-    return Promise.resolve(res.data)
-  })
+  options.param = 'callback'
+  options.prefix = 'MusicJsonCallback'
+
+  return jsonp(url, data, options)
 }
