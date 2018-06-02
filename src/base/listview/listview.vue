@@ -72,6 +72,9 @@ export default {
     }
   },
   methods: {
+    refresh () {
+      this.$refs.listview.refresh()
+    },
     onShortcutTouchStart (e) {
       let anchorIndex = parseInt(getData(e.target, 'index'), 10)
       let firstTouch = e.touches[0]
